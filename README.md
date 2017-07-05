@@ -1,6 +1,6 @@
 # Clue
 
-**TODO: Add description**
+An AI agent to help determine the final state in a game of Clue.
 
 ## Installation
 
