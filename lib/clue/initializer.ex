@@ -5,9 +5,20 @@ defmodule Clue.Initializer do
 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
-    Clue.Interface.write("Welcome to Clue!")
-    edition = Clue.Interface.prompt("Which edition are you using? > ")
-    Clue.Interface.write("You entered #{edition}")
+  end
+
+  def setup do
+    GenServer.call(__MODULE__, {:setup})
+  end
+
+  # GenServer Implementation
+
+  def handle_call({:setup}, _from, state) do
+    IO.puts "Welcome to Clue!"
+    edition = IO.gets("Which edition are you using? > ") |> String.trim
+    IO.puts "You entered #{edition}"
+    Clue.EditionValidator.load_edition(edition)
+    {:reply, {:ok}, state}
   end
 
 end
