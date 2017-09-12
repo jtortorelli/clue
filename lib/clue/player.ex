@@ -1,6 +1,8 @@
 defmodule Clue.Player do
   use GenServer
 
+  # External API
+
   def start_link(name) do
     GenServer.start_link(__MODULE__, :ok, name: name)
   end
@@ -20,6 +22,8 @@ defmodule Clue.Player do
   def get_number_of_cards(player) do
     GenServer.call(player, {:get_number_of_cards})
   end
+
+  # GenServer Implementation
 
   def init(:ok) do
     cards = MapSet.new
