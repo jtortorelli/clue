@@ -13,6 +13,11 @@ defmodule Clue.Initializer do
 
   # GenServer Implementation
 
+  def init(state) do
+    Process.send_after(self(), {:setup}, 1000)
+    {:ok, state}
+  end
+
   def handle_call({:setup}, _from, state) do
     IO.puts "Welcome to Clue!"
     Clue.EditionValidator.load_edition
