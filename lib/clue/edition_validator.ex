@@ -13,7 +13,7 @@ defmodule Clue.EditionValidator do
   end
 
   def load_edition do
-    GenServer.call(__MODULE__, {:load_edition})
+    GenServer.call(__MODULE__, {:load_edition}, :infinity)
   end
 
   # GenServer Implementation

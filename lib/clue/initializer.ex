@@ -8,7 +8,7 @@ defmodule Clue.Initializer do
   end
 
   def setup do
-    GenServer.call(__MODULE__, {:setup})
+    GenServer.call(__MODULE__, {:setup}, :infinity)
   end
 
   # GenServer Implementation
