@@ -19,16 +19,19 @@ defmodule Clue.EditionValidator do
   # GenServer Implementation
 
   def handle_call({:load_edition}, _from, state) do
+    check_file_exists()
+    {:reply, {:ok}, state}
+  end
+
+  defp check_file_exists do
     edition = IO.gets("Which edition are you using? > ") |> String.trim
     IO.puts "You entered #{edition}"
     path = @editions_dir <> "/" <> edition <> ".csv"
-    IO.puts path
     if (File.exists?(path)) do
-      IO.puts "file exists!"
-      {:reply, {:ok}, state}
+      IO.puts "Edition found!"
     else
-      IO.puts "file does not exist!"
-      {:reply, {:error}, state}
+      IO.puts "Edition not found! Please try again!"
+      check_file_exists()
     end
   end
 end
