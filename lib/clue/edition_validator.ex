@@ -12,20 +12,23 @@ defmodule Clue.EditionValidator do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def load_edition(name) do
-    GenServer.call(__MODULE__, {:load_edition, name})
+  def load_edition do
+    GenServer.call(__MODULE__, {:load_edition})
   end
 
   # GenServer Implementation
 
-  def handle_call({:load_edition, name}, _from, state) do
-    path = @editions_dir <> "/" <> name <> ".csv"
+  def handle_call({:load_edition}, _from, state) do
+    edition = IO.gets("Which edition are you using? > ") |> String.trim
+    IO.puts "You entered #{edition}"
+    path = @editions_dir <> "/" <> edition <> ".csv"
     IO.puts path
     if (File.exists?(path)) do
       IO.puts "file exists!"
+      {:reply, {:ok}, state}
     else
       IO.puts "file does not exist!"
+      {:reply, {:error}, state}
     end
-    {:reply, {:ok}, state}
   end
 end

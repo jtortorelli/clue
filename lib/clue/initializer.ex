@@ -15,9 +15,7 @@ defmodule Clue.Initializer do
 
   def handle_call({:setup}, _from, state) do
     IO.puts "Welcome to Clue!"
-    edition = IO.gets("Which edition are you using? > ") |> String.trim
-    IO.puts "You entered #{edition}"
-    Clue.EditionValidator.load_edition(edition)
+    Clue.EditionValidator.load_edition
     {:reply, {:ok}, state}
   end
 
