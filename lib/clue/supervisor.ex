@@ -10,7 +10,6 @@ defmodule Clue.Supervisor do
   def start_workers(sup) do
     Supervisor.start_child(sup, worker(Clue.Initializer, []))
     Supervisor.start_child(sup, worker(Clue.EditionValidator, []))
-    Clue.Initializer.setup
   end
 
   def init(_) do
