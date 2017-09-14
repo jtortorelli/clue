@@ -1,11 +1,7 @@
 defmodule Clue.Application do
-  # use Application
+  use Application
 
-  # def start(_type, _args) do
-  #   Clue.Supervisor.start_link
-  # end
-
-  def main(args \\ []) do
+  def start(_type, _args) do
     Clue.Supervisor.start_link
   end
 end

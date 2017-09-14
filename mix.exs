@@ -7,8 +7,7 @@ defmodule Clue.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps(),
-     escript: escript()]
+     deps: deps()]
   end
 
   # Configuration for the OTP application
@@ -18,12 +17,8 @@ defmodule Clue.Mixfile do
     # Specify extra applications you'll use from Erlang/Elixir
     [
       extra_applications: [:logger],
-      # mod: {Clue.Application, []}
+      mod: {Clue.Application, []}
     ]
-  end
-
-  def escript do
-    [main_module: Clue.Application]
   end
 
   # Dependencies can be Hex packages:
