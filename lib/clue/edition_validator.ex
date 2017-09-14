@@ -26,16 +26,18 @@ defmodule Clue.EditionValidator do
   defp select_edition do
     IO.puts("Select edition:")
     files = File.ls!(@editions_dir)
+    displayFiles = files
     |> Enum.map(fn f -> Path.basename(f, ".csv") end)
+    |> Enum.map(fn n -> Clue.EditionUtil.format_name(n) end)
     |> Stream.with_index(1)
     |> Enum.to_list
-    Enum.each(files, fn {f, i} -> IO.puts "#{i}. #{f}" end)
+    Enum.each(displayFiles, fn {f, i} -> IO.puts "#{i}. #{f}" end)
     parsedIndex = IO.gets("> ") |> String.trim |> Integer.parse
     num_files = Enum.count(files)
     case parsedIndex do
       {index, _remainder} when index <= num_files and index > 0 ->
-        {file, _i} = Enum.at(files, index - 1)
-        filename = @editions_dir <> "/" <> file <> ".csv"
+        file = Enum.at(files, index - 1)
+        filename = @editions_dir <> "/" <> file
         IO.puts("You selected #{filename}")
       _ ->
         IO.puts("You did not select a valid edition!")
