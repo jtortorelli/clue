@@ -4,12 +4,14 @@ defmodule Clue.EditionUtil do
   NimbleCSV.define(MyParser, [])
 
   @root_dir File.cwd!
-  @custom_editions_dir Path.join(~w(#{@root_dir} lib resources editions custom))
+  @editions_dir Path.join(~w(#{@root_dir} lib resources editions))
+  @standard_edition_filename @editions_dir <> "/standard.csv"
+  @custom_editions_dir Path.join(~w(#{@editions_dir} custom))
 
   def load_edition do
     case select_edition_again() do
-      {:ok} ->
-        nil
+      {:ok, edition} ->
+        edition
       {:error, message} ->
         IO.puts(message)
         load_edition()
@@ -28,7 +30,7 @@ defmodule Clue.EditionUtil do
     files = File.ls!(@custom_editions_dir)
     |> Stream.with_index(1)
     |> Enum.to_list
-    |> Enum.map(fn {filename, index} -> {index, filename, (Path.basename(filename, ".csv") |> format_name) } end)
+    |> Enum.map(fn {filename, index} -> {index, @custom_editions_dir <> "/" <> filename, (Path.basename(filename, ".csv") |> format_name) } end)
 
     Enum.each(files, fn {index, _filename, display_name} -> IO.puts "#{index}. #{display_name}" end)
 
@@ -40,13 +42,15 @@ defmodule Clue.EditionUtil do
       "" ->
         # return standard edition
         IO.puts("You selected the standard edition!")
-        {:ok}
+        read_edition_from_file(@standard_edition_filename)
+        |> validate_edition_contents
       index ->
         case Integer.parse(index) do
           {i, _} when i <= num_files and i > 0 ->
             {_index, filename, display_name} = Enum.at(files, i - 1)
             IO.puts("You selected the #{display_name} edition!")
-            {:ok}
+            read_edition_from_file(filename)
+            |> validate_edition_contents
           :error ->
             {:error, "You did not select a valid edition!\nPlease try again!"}
           _ ->
