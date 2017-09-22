@@ -15,8 +15,9 @@ defmodule Clue.Initializer do
 
   def handle_call({:setup}, _from, state) do
     IO.puts "Welcome to Clue!"
-    Clue.EditionUtil.load_edition
-    {:reply, {:ok}, state}
+    edition = Clue.EditionUtil.load_edition
+    players = Clue.PlayerUtil.load_players
+    {:reply, {:ok, edition, players}, state}
   end
 
 end
