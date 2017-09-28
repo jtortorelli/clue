@@ -2,9 +2,7 @@ defmodule Clue.Supervisor do
   use Supervisor
 
   def start_link do
-    result = {:ok, sup} = Supervisor.start_link(__MODULE__, [])
-    start_workers(sup)
-    result
+    {:ok, _pid} = Supervisor.start_link(__MODULE__, [])
   end
 
   def start_workers(sup) do
@@ -12,6 +10,7 @@ defmodule Clue.Supervisor do
   end
 
   def init(_) do
-    supervise [], strategy: :one_for_one
+    child_processes = [worker(Clue.Initializer, [])]
+    supervise child_processes, strategy: :one_for_one
   end
 end
