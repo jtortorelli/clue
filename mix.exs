@@ -32,7 +32,8 @@ defmodule Clue.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:nimble_csv, "~> 0.2.0"}
+      {:nimble_csv, "~> 0.2.0"},
+      {:scribe, "~> 0.4.0"}
     ]
   end
 end
