@@ -23,6 +23,10 @@ defmodule Clue.Player do
     GenServer.call(player, {:get_number_of_cards})
   end
 
+  def get_player_info(player) do
+    GenServer.call(player, {:get_info, player})
+  end
+
   # GenServer Implementation
 
   def init(:ok) do
@@ -45,5 +49,9 @@ defmodule Clue.Player do
 
   def handle_call({:get_number_of_cards}, _from, {_, number_of_cards} = state) do
     {:reply, {:ok, number_of_cards}, state}
+  end
+
+  def handle_call({:get_info, name}, _from, {cards, number_of_cards} = state) do
+    {:reply, {:ok, %{name: name, number_of_cards: number_of_cards, cards: cards}}, state}
   end
 end

@@ -13,6 +13,7 @@ defmodule Clue.PlayerUtil do
     players = select_number_of_players()
     |> get_player_info
     |> get_number_of_cards_per_player
+    |> Enum.map(fn {name, num_of_cards} -> {String.to_atom(name), num_of_cards} end)
     {:ok, players}
   end
 
